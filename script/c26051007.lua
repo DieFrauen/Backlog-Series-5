@@ -1,0 +1,22 @@
+--Selachim - Fierce Nomencreation
+function c26051007.initial_effect(c)
+	Fusion.AddProcMixRep(c,true,true,c26051007.ffilter,2,99)
+	Fusion.AddContactProc(c,c26051007.contactfil,c26051007.contactop,c26051007.splimit,nil,nil,nil,false)
+	
+end
+function c26051007.ffilter(c,fc,sumtype,sp,sub,mg,sg)
+	local rc=RACE_AQUA+RACE_FISH+RACE_SEASERPENT+RACE_REPTILE+RACE_PLANT 
+	return c:IsRace(rc,fc,sumtype,sp) and (not sg or sg:FilterCount(aux.TRUE,c)==0 or not sg:IsExists(Card.IsRace,1,c,c:GetRace(),fc,sumtype,sp))
+end
+function c26051007.splimit(e,se,sp,st)
+	return (st&SUMMON_TYPE_FUSION)==SUMMON_TYPE_FUSION or e:GetHandler():GetLocation()~=LOCATION_EXTRA 
+end
+function c26051007.contactfil(tp)
+	return Duel.GetMatchingGroup(c26051007.mtfilter,tp,LOCATION_MZONE+LOCATION_HAND,0,nil)
+end
+function c26051007.mtfilter(c)
+	return c:IsReleasable() and c:IsType(TYPE_NORMAL)
+end
+function c26051007.contactop(g)
+	Duel.Release(g,REASON_COST+REASON_MATERIAL)
+end
