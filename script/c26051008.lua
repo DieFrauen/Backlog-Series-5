@@ -64,7 +64,7 @@ function c26051008.activate1(e,tp,eg,ep,ev,re,r,rp)
 end
 function c26051008.condition2(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) or not Duel.IsChainNegatable(ev) then return false end
-	if not re:IsMonsterEffect() and not re:IsHasType(EFFECT_TYPE_ACTIVATE) then return false end
+	if not re:IsHasType(EFFECT_TYPE_ACTIVATE) then return false end
 	return re:IsHasCategory(CATEGORY_SPECIAL_SUMMON)
 end
 function c26051008.target2(e,tp,eg,ep,ev,re,r,rp,chk)
