@@ -93,7 +93,7 @@ function c26052015.tgop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c26052015.mfilter(c,e,tp)
-	return c:IsAbleToDeck() and c:IsType(TYPE_NORMAL+TYPE_FUSION)
+	return c:IsAbleToDeck() and c:GetType()&(TYPE_NORMAL|TYPE_FUSION)~=0
 end
 function c26052015.fextra(e,tp,mg)
 	return Duel.GetMatchingGroup(Fusion.IsMonsterFilter(Card.IsFaceup,Card.IsAbleToDeck),tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
