@@ -69,7 +69,8 @@ function c26052015.costchk(e,tp,eg,ep,ev,re,r,rp,chk)
 		Duel.ConfirmCards(1-tp,tg)
 		Duel.ShuffleHand(tp)
 	end
-endtion c26052015.regop(e,tp,eg,ep,ev,re,r,rp)
+end
+function c26052015.regop(e,tp,eg,ep,ev,re,r,rp)
 	local tg=eg:Filter(c26052015.regfilter,nil,e,tp)
 	if #tg>0 then
 		for tc in tg:Iter() do
