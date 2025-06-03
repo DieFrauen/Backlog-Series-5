@@ -42,7 +42,8 @@ function c26052014.fcheck(tp,sg,fc)
 	and (dg<2 and ng>1 or dg==0)
 end
 function c26052014.thfilter(c)
-	return c:IsFaceup() and c:IsCode(86120751) and c:IsAbleToHand()
+	return (c:IsSetCard(0x652) or c:IsType(TYPE_NORMAL))
+	and c:IsMonster() and c:IsAbleToHand()
 end
 function c26052014.tdtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and c26052014.thfilter(chkc) end
