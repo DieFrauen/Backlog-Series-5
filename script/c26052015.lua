@@ -92,11 +92,11 @@ function c26052015.tgop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SendtoDeck(tg,nil,2,REASON_EFFECT)
 	end
 end
-function c26052015.mfilter(c,e,tp)
+function c26052015.mfilter(c)
 	return c:IsAbleToDeck() and c:GetType()&(TYPE_NORMAL|TYPE_FUSION)~=0
 end
 function c26052015.fextra(e,tp,mg)
-	return Duel.GetMatchingGroup(Fusion.IsMonsterFilter(Card.IsFaceup,Card.IsAbleToDeck),tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
+	return Duel.GetMatchingGroup(Fusion.IsMonsterFilter(c26052015.mfilter),tp,LOCATION_GRAVE,LOCATION_GRAVE,nil)
 end
 function c26052015.stage2(e,tc,tp,sg,chk)
 	if chk==1 then
