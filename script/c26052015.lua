@@ -73,11 +73,11 @@ function c26052015.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chkc then return c26052015.filter1(chkc,e,tp) and chkc:IsLocation(LOCATION_GRAVE) end
 	if chk==0 then return --true end
 	aux.SelectUnselectGroup(tg,e,tp,1,1,c26052015.rescon,0) end
-	local sg=aux.SelectUnselectGroup(tg,e,tp,1,3,c26052015.rescon,1,tp,HINTMSG_RELEASE,c26052015.rescon)
-	Duel.SetTargetCard(sg)
+	local g=aux.SelectUnselectGroup(tg,e,tp,1,3,c26052015.rescon,1,tp,HINTMSG_RELEASE,c26052015.rescon)
+	Duel.SetTargetCard(g)
 	Duel.SetTargetPlayer(tp)
-	Duel.SetPossibleOperationInfo(0,CATEGORY_TOGRAVE,nil,#sg,tp,LOCATION_DECK|LOCATION_HAND)
-	Duel.SetPossibleOperationInfo(0,CATEGORY_TODECK,sg,#sg,tp,0)
+	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,0)
+	Duel.SetPossibleOperationInfo(0,CATEGORY_TOGRAVE,nil,#g,tp,LOCATION_DECK|LOCATION_HAND)
 end
 function c26052015.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local g1=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)

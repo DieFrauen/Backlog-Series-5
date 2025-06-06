@@ -4,15 +4,15 @@ function c26052009.initial_effect(c)
 	Fusion.AddContactProc(c,c26052009.contactfil,c26052009.contactop,c26052009.splimit,nil,nil,aux.Stringid(26052009,0),false)
 	c:SetSPSummonOnce(26052009)
 	--Special Summon
-	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(26052009,1))
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetCost(c26052009.cost)
-	e2:SetTarget(c26052009.sptg)
-	e2:SetOperation(c26052009.spop)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(26052009,1))
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetCost(c26052009.cost)
+	e1:SetTarget(c26052009.sptg)
+	e1:SetOperation(c26052009.spop)
+	c:RegisterEffect(e1)
 end
 c26052009.RACES=(RACE_ROCK|RACE_PYRO|RACE_AQUA|RACE_THUNDER)
 function c26052009.ffilter(c,fc,sumtype,sp,sub,mg,sg)
@@ -67,41 +67,61 @@ function c26052009.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 	Duel.SendtoGrave(tg,REASON_COST+REASON_RELEASE)
 end
-function c26052009.spfilter(c,e,tp,rc,opp)
-	return c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEDOWN_DEFENSE) and c:IsRace(rc) and
-	(c:IsType(TYPE_NORMAL) or opp)
+function c26052009.spfilter(c,e,tp,op)
+	return c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEDOWN_DEFENSE) and
+	(c:IsType(TYPE_NORMAL) or op)
 end
 function c26052009.rescon(sg,e,tp,mg)
 	return sg:GetClassCount(Card.GetRace)==#sg
+end
+function c26052009.rescon2(sg,e,tp,mg)
+	local ft1=Duel.GetLocationCount(tp,LOCATION_MZONE)
+	local ft2=Duel.GetLocationCount(1-tp,LOCATION_MZONE)
+	local mc=math.min(ft1+ft2,mg:GetClassCount(Card.GetRace))
+	return sg:GetClassCount(Card.GetRace)==#sg
+	and #sg==mc
+	and sg:FilterCount(Card.IsControler,nil,tp)<=ft1
+	and sg:FilterCount(Card.IsControler,nil,1-tp)<=ft2
 end
 function c26052009.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
 	local g=Duel.GetMatchingGroup(c26052009.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_DECK,0,nil,e,tp,RACE_ALL,false)
 	if chk==0 then return ft>0 and #g>0 end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_DECK)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
 function c26052009.spop(e,tp,eg,ep,ev,re,r,rp,chk)
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	local races=e:GetLabel()
-	if ft==0 then return end
-	if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then ft=1 end
-	local rc1,rc2,rc=0,0,0
-	Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_RACE)
-	rc1=Duel.AnnounceRace(1-tp,3,RACE_ALL)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RACE)
-	rc2=Duel.AnnounceRace(tp,3,RACE_ALL-rc1)
-	rc=rc1|rc2
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(c26052009.spfilter),tp,LOCATION_HAND+LOCATION_GRAVE+LOCATION_DECK,0,nil,e,tp,rc,false)
-	local rsg=aux.SelectUnselectGroup(g,e,tp,1,ft,c26052009.rescon,1,tp,aux.Stringid(26052009,3),c26052009.rescon)
-	if #rsg>0 and Duel.SpecialSummon(rsg,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)~=0 then
-		Duel.ConfirmCards(1-tp,rsg)
-		Duel.ShuffleSetCard(rsg)
-		local p,rc2=1-tp,rc-rsg:GetSum(Card.GetRace)
-		local g2=Duel.GetMatchingGroup(aux.NecroValleyFilter(c26052009.spfilter),tp,0,LOCATION_HAND+LOCATION_GRAVE+LOCATION_DECK,nil,e,tp,rc2,true)
-		if #g2>0 and Duel.SelectYesNo(p,aux.Stringid(26052009,4)) then
-			g2=g2:Select(p,1,1,nil)
-			Duel.SpecialSummon(g2,0,p,p,false,false,POS_FACEUP)
+	local g1=Duel.GetMatchingGroup(c26052009.spfilter,tp,LOCATION_DECK,0,nil,e,tp,false)
+	local g2=Duel.GetMatchingGroup(c26052009.spfilter,tp,0,LOCATION_DECK,nil,e,tp,true)
+	local sg1=aux.SelectUnselectGroup(g1,e,tp,1,5,c26052009.rescon,1,tp,aux.Stringid(26052009,3),c26052009.rescon)
+	local sg2=aux.SelectUnselectGroup(g2,e,tp,1,5,c26052009.rescon,1,1-tp,aux.Stringid(26052009,3),c26052009.rescon)
+	Duel.ConfirmCards(tp,sg2); Duel.ConfirmCards(1-tp,sg1)
+	sg1:Merge(sg2)
+	local tg=Group.CreateGroup()
+	while #sg1>0 do
+		local tc=sg1:Select(tp,1,1,nil):GetFirst()
+		if tc then
+			local p=tc:GetOwner()
+			tg:AddCard(tc)
+			sg1:Sub(sg1:Filter(Card.IsRace,nil,tc:GetRace()))
+			if tg:FilterCount(Card.IsControler,nil,p)==Duel.GetLocationCount(p,LOCATION_MZONE) then
+				sg1:Sub(sg1:Filter(Card.IsControler,nil,p))
+			end
+			if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then
+				sg1:Clear()
+			end
 		end
 	end
+	g1:Clear();g2:Clear();
+	local op=tp
+	for tc in tg:Iter() do
+		op=tc:GetOwner()
+		if Duel.SpecialSummonStep(tc,0,tp,op,false,false,POS_FACEDOWN_DEFENSE)~=0 then
+			if op==tp then g1:AddCard(tc) else g2:AddCard(tc) end
+		end
+	end
+	Duel.SpecialSummonComplete()
+	Duel.ConfirmCards(1-tp,g1)
+	Duel.ShuffleSetCard(g1)
+	Duel.ConfirmCards(tp,g2)
+	Duel.ShuffleSetCard(g2)
 end

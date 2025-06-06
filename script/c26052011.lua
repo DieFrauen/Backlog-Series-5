@@ -67,11 +67,14 @@ function c26052011.spcon(e,c)
 	if c==nil then return true end
 	local tp=c:GetControler()
 	local g=Duel.GetMatchingGroup(c26052011.spcostfilter,tp,LOCATION_MZONE,0,nil)
-	return g:CheckWithSumGreater(Card.GetMaterialCount,12)
+	return aux.SelectUnselectGroup(g,e,tp,2,#g,c26052011.rescon,0)
+end
+function c26052011.rescon(sg,e,tp,mg)
+	return sg:GetSum(Card.GetMaterialCount)>11
 end
 function c26052011.sptg(e,tp,eg,ep,ev,re,r,rp,chk,c)
 	local g=Duel.GetMatchingGroup(c26052011.spcostfilter,tp,LOCATION_MZONE,0,nil)
-	local sg=g:SelectWithSumGreater(tp,Card.GetMaterialCount,12)
+	local sg=aux.SelectUnselectGroup(g,e,tp,2,#g,c26052011.rescon,1,tp,HINTMSG_RELEASE,c26052011.rescon)
 	if sg:GetSum(Card.GetMaterialCount)>11 then
 		sg:KeepAlive()
 		e:SetLabelObject(sg)
