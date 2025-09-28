@@ -77,6 +77,7 @@ function c26053002.thop(e,tp,eg,ep,ev,re,r,rp)
 			matfilter=aux.FilterBoolFunction(Card.IsSetCard,0x653),
 			extrafil=c26053002.extramat,
 			extraop=c26053002.extraop,
+			stage2=c26053002.stage2,
 			forcedselection=c26053002.ritcheck}
 		local rtg,rop=
 		Ritual.Target(rparams),
@@ -87,9 +88,14 @@ function c26053002.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c26053002.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
-	if tc:IsLocation(LOCATION_DECK) and Duel.GetFlagEffect(tp,26053011)==0 then
+	local m1,m2=mat:Split(Card.IsPublic,nil)
+	Duel.HintSelection(m1)
+	Duel.ConfirmCards(1-tp,m2)
+	Duel.ReleaseRitualMaterial(mat)
+end
+function c26053002.stage2(mat,e,tp,eg,ep,ev,re,r,rp,tc)
+	if tc:GetSummonLocation()==LOCATION_DECK and Duel.GetFlagEffect(tp,26053011)==0 then
 		Duel.RegisterFlagEffect(tp,26053011,RESET_PHASE|PHASE_END,0,1)
 		Duel.Hint(HINT_CARD,tp,26053011)
 	end
-	Duel.ReleaseRitualMaterial(mat)
 end

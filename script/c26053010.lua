@@ -70,6 +70,7 @@ function c26053010.tgconf(c)
 end
 function c26053010.tgcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(c26053010.tgconf,1,nil)
+	and not eg:IsContains(e:GetHandler())
 end
 function c26053010.tgfilter(c,p)
 	return Duel.IsPlayerCanRelease(p,c)

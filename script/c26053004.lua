@@ -28,11 +28,11 @@ function c26053004.initial_effect(c)
 	e2a:SetCondition(c26053004.spcon2)
 	c:RegisterEffect(e2a)
 end
-function c26053004.cfilter(c,p)
-	return c:IsPreviousLocation(LOCATION_DECK) and c:IsControler(p)
+function c26053004.cfilter(c)
+	return c:IsPreviousLocation(LOCATION_DECK|LOCATION_EXTRA)
 end
 function c26053004.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(c26053004.cfilter,1,nil,rp)
+	return eg:IsExists(c26053004.cfilter,1,nil)
 end
 function c26053004.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
@@ -65,8 +65,9 @@ function c26053004.tgop(e,tp,eg,ep,ev,re,r,rp)
 				location=LOCATION_HAND|LOCATION_GRAVE|LOCATION_DECK,
 				matfilter=aux.FilterBoolFunction(Card.IsSetCard,0x653),
 				extrafil=c26053004.extramat,
-				extratg=c26053003.extratg,
-				extraop=c26053003.extraop,
+				extratg=c26053004.extratg,
+				extraop=c26053004.extraop,
+				stage2=c26053004.stage2,
 				forcedselection=c26053004.ritcheck}
 		local rtg,rop=Ritual.Target(rparams),Ritual.Operation(rparams)
 		if rtg(e,tp,eg,ep,ev,re,r,rp,0) and Duel.SelectYesNo(tp,aux.Stringid(26053004,2)) then
@@ -80,13 +81,19 @@ end
 function c26053004.extramat(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Group.FromCards(e:GetLabelObject())
 end
-function c26053004.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
-	if tc:IsLocation(LOCATION_DECK) and Duel.GetFlagEffect(tp,26053011)==0 then
+function c26053004.stage2(mat,e,tp,eg,ep,ev,re,r,rp,tc)
+	if tc:GetSummonLocation()==LOCATION_DECK and Duel.GetFlagEffect(tp,26053011)==0 then
 		Duel.RegisterFlagEffect(tp,26053011,RESET_PHASE|PHASE_END,0,1)
 		Duel.Hint(HINT_CARD,tp,26053011)
 	end
+end
+function c26053004.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
 	local mat2=mat:Filter(Card.IsLocation,nil,LOCATION_DECK)
 	mat:Sub(mat2)
+	local m1,m2=mat:Split(Card.IsPublic,nil)
+	Duel.HintSelection(m1)
+	Duel.ConfirmCards(1-tp,m2)
+	Duel.ConfirmCards(1-tp,mat2)
 	Duel.ReleaseRitualMaterial(mat)
 	Duel.SendtoGrave(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)
 end

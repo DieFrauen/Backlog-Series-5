@@ -43,7 +43,7 @@ function c26053013.initial_effect(c)
 	c:RegisterEffect(e3a)
 	local e4a=e4:Clone()
 	e4a:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e4a:SetProperty(EFFECT_FLAG_DELAY)
+	e4a:SetProperty(EFFECT_FLAG_DELAY|EFFECT_FLAG_PLAYER_TARGET)
 	e4a:SetCost(c26053013.recost)
 	e4a:SetCode(EVENT_CUSTOM+26053013)
 	c:RegisterEffect(e4a)
@@ -103,8 +103,8 @@ function c26053013.thop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
-function c26053013.lvfilter(c)
-	return c:IsMonster() and (c:IsOnField()
+function c26053013.lvfilter(c,e)
+	return c:IsMonster() and (c:IsOnField() and c:IsCanBeEffectTarget(e)
 	or c:IsSetCard(0x653) --and not c:IsPublic()
 	)
 end
@@ -113,9 +113,9 @@ function c26053013.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local loc=LOCATION_MZONE 
 	local lab=e:GetLabel()
 	if chkc then return c26053013.lvfilter(e,tp,0) and chkc:IsLocation(loc) end
-	if chk==0 then return Duel.IsExistingMatchingCard(c26053013.lvfilter,tp,loc+LOCATION_HAND,loc,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(c26053013.lvfilter,tp,loc+LOCATION_HAND,loc,1,nil,e) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
-	local tc=Duel.SelectMatchingCard(tp,c26053013.lvfilter,tp,loc+LOCATION_HAND,loc,1,1,nil):GetFirst()
+	local tc=Duel.SelectMatchingCard(tp,c26053013.lvfilter,tp,loc+LOCATION_HAND,loc,1,1,nil,e):GetFirst()
 	Duel.SetTargetCard(tc)
 	if tc:IsLocation(LOCATION_HAND) then Duel.ConfirmCards(1-tp,tc) end
 end

@@ -45,7 +45,7 @@ function c26053001.initial_effect(c)
 	c:RegisterEffect(e3c)
 end
 function c26053001.thfilter(c)
-	return c:IsSpellTrap() and c:IsSetCard(0x1653) and c:IsAbleToHand()
+	return c:IsSetCard(0x2653) and c:IsAbleToHand()
 end
 function c26053001.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(c26053001.thfilter,tp,LOCATION_DECK|LOCATION_GRAVE,0,1,nil) end

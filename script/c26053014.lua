@@ -45,6 +45,7 @@ function c26053014.activate(e,tp,eg,ep,ev,re,r,rp)
 		matfilter=aux.FilterBoolFunction(Card.IsSetCard,0x1653),
 		extrafil=c26053014.extramat,
 		extraop=c26053014.extraop,
+		stage2=c26053014.stage2,
 		forcedselection=c26053014.ritcheck}
 	local rtg,rop=
 	Ritual.Target(rparams),
@@ -100,14 +101,17 @@ function c26053014.extramat(e,tp,eg,ep,ev,re,r,rp,chk)
 	return Duel.GetMatchingGroup(c26053014.extrafilter,tp,0,LOCATION_MZONE,nil)
 end
 function c26053014.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
-	if tc:IsLocation(LOCATION_DECK) and Duel.GetFlagEffect(tp,26053011)==0 then
+	Duel.ConfirmCards(1-tp,tc)
+	Duel.ReleaseRitualMaterial(mat)
+end
+function c26053014.stage2(mat,e,tp,eg,ep,ev,re,r,rp,tc)
+	if tc:GetSummonLocation()==LOCATION_DECK and Duel.GetFlagEffect(tp,26053011)==0 then
 		Duel.RegisterFlagEffect(tp,26053011,RESET_PHASE|PHASE_END,0,1)
 		Duel.Hint(HINT_CARD,tp,26053011)
 	end
-	Duel.ReleaseRitualMaterial(mat)
 end
 function c26053014.checkop(e,tp,eg,ep,ev,re,r,rp)
-	local loc,p=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION,CHAININFO_TRIGGERING_CONTROLER)
+	local loc=Duel.GetChainInfo(ev,CHAININFO_TRIGGERING_LOCATION)
 	local tc=re:GetHandler()
 	if re:IsMonsterEffect() and tc:IsRelateToEffect(re) and loc==LOCATION_MZONE then
 		tc:RegisterFlagEffect(26053014,RESETS_STANDARD_PHASE_END,0,1)

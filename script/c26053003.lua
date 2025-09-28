@@ -37,24 +37,28 @@ end
 function c26053003.extraop(mat,e,tp,eg,ep,ev,re,r,rp,tc)
 	local mat2=mat:Filter(Card.IsLocation,nil,LOCATION_DECK)
 	mat:Sub(mat2)
+	Duel.ConfirmCards(1-tp,mat)
+	for tc in mat2:Iter() do
+		Duel.ConfirmCards(1-tp,tc)
+	end
 	Duel.ReleaseRitualMaterial(mat)
 	Duel.SendtoGrave(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)
 end
 function c26053003.ritcheck(e,tp,g,sc)
 	local exg=e:GetLabelObject()
 	return g:GetClassCount(Card.GetLevel)==#g and 
-	g:FilterCount(Card.IsSetCard,nil,0x1653)==#g and 
 	exg:IsContains(sc) and
 	g:FilterCount(Card.IsLocation,nil,LOCATION_ONFIELD)==0 
 end
 function c26053003.exclude(c,g)
 	return g:IsContains(c)
 end
-function c26053003.cfilter(c,p)
-	return c:IsPreviousLocation(LOCATION_DECK) and c:IsControler(p) 
+function c26053003.cfilter(c,p,op)
+	return c:IsPreviousLocation(LOCATION_DECK)
+	or (p~=op and c:IsPreviousLocation(LOCATION_EXTRA))
 end
 function c26053003.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(c26053003.cfilter,1,nil,rp)
+	return eg:IsExists(c26053003.cfilter,1,nil,tp,rp)
 end
 function c26053003.spcon2(e,tp,eg,ep,ev,re,r,rp)
 	return re and re:IsHasType(EFFECT_TYPE_ACTIONS) and re:GetHandler():IsSetCard(0x653)

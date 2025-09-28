@@ -73,24 +73,24 @@ function c26053009.tfop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(c26053009.setfilter),tp,LOCATION_DECK|LOCATION_GRAVE,0,1,1,nil)
 	if #g>0 then Duel.SSet(tp,g) end
 end
-function c26053009.spfilter(c,e,tp,mt)
+function c26053009.spfilter(c,e,tp,tid)
 	return c:IsCanBeSpecialSummoned(e,0,tp,false,false) and
 	((c:IsSetCard(0x1653) and c:IsLocation(LOCATION_HAND)) or
-	(c:GetTurnID()+mt<=Duel.GetTurnCount()))
+	(c:GetTurnID()<tid))
 end
 function c26053009.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local ct,mt=e:GetHandler():GetMaterialCount(),0
-	if ct<3 then mt=1 end
+	local mt,tid=e:GetHandler():GetMaterialCount(),Duel.GetTurnCount()
+	if mt<3 then tid=tid-1 end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(c26053009.spfilter,tp,LOCATION_GRAVE+LOCATION_HAND,0,1,nil,e,tp,mt) end
+		and Duel.IsExistingMatchingCard(c26053009.spfilter,tp,LOCATION_GRAVE+LOCATION_HAND,LOCATION_GRAVE,1,nil,e,tp,tid) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE+LOCATION_HAND)
 end
 function c26053009.spop(e,tp,eg,ep,ev,re,r,rp)
-	local ct,mt=e:GetHandler():GetMaterialCount(),0
-	if ct<3 then mt=1 end
+	local mt,tid=e:GetHandler():GetMaterialCount(),Duel.GetTurnCount()
+	if mt<3 then tid=tid-1 end
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(c26053009.spfilter),tp,LOCATION_GRAVE+LOCATION_HAND,0,1,1,nil,e,tp,mt)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(c26053009.spfilter),tp,LOCATION_GRAVE+LOCATION_HAND,LOCATION_GRAVE,1,1,nil,e,tp,tid)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end

@@ -49,12 +49,13 @@ end
 function c26053011.elfilter(c,a)
 	local lv={}
 	if c:IsPublic() then return false end
-	if a:IsSetCard(0x2653) and a:IsType(TYPE_RITUAL) then
-		lv=a.ELEGIAC
+	if c:IsSetCard(0x2653) and c:IsType(TYPE_RITUAL) then
+		lv=c.ELEGIAC
 		for i=1,5 do
-			if lv[i] and c:GetLevel()==lv[i] then return true end
+			if c:IsSetCard(0x2653) and c:IsType(TYPE_RITUAL)
+			and lv[i] and a:GetLevel()==lv[i] then return true end
 		end
-	else
+	elseif a:IsSetCard(0x2653) and a:IsType(TYPE_RITUAL) then
 		lv=c.ELEGIAC
 		for i=1,5 do
 			if c:IsSetCard(0x2653) and c:IsType(TYPE_RITUAL)
@@ -65,7 +66,7 @@ function c26053011.elfilter(c,a)
 end
 function c26053011.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local a,b=Duel.GetBattleMonster(tp)
-	return a and b  and b:IsFaceup() and a:IsFaceup()
+	return a and b and b:IsFaceup() and a:IsFaceup()
 	and Duel.IsExistingMatchingCard(c26053011.elfilter,tp,LOCATION_HAND,0,1,nil,a)
 end
 function c26053011.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -76,8 +77,7 @@ function c26053011.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	c:RegisterFlagEffect(26053111,RESET_EVENT|RESETS_STANDARD|RESET_PHASE|PHASE_DAMAGE_CAL,0,1)
 end
 function c26053011.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local b=Duel.GetFirstTarget()
-	local a=b:GetBattleTarget()
+	local a,b=Duel.GetBattleMonster(tp)
 	if a:IsRelateToBattle() and a:IsFaceup()
 	and b:IsRelateToBattle() and b:IsFaceup() then
 		local sc=Duel.SelectMatchingCard(tp,c26053011.elfilter,tp,LOCATION_HAND,0,1,1,nil,a)
