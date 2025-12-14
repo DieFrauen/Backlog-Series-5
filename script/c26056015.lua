@@ -156,9 +156,9 @@ function c26056015.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local zone=c26056015.zones(e,tp)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and c26056015.spfilter(chkc,e,tp,zone) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingTarget(c26056015.spfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,nil,e,tp,zone) end
+		and Duel.IsExistingTarget(c26056015.spfilter,tp,LOCATION_GRAVE,0,1,nil,e,tp,zone) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectTarget(tp,c26056015.spfilter,tp,LOCATION_GRAVE,LOCATION_GRAVE,1,1,nil,e,tp,zone)
+	local g=Duel.SelectTarget(tp,c26056015.spfilter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp,zone)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
 	Duel.SetPossibleOperationInfo(0,CATEGORY_DRAW,nil,0,tp,0)
 end
@@ -170,7 +170,7 @@ function c26056015.spop(e,tp,eg,ep,ev,re,r,rp)
 		local g=tc:GetMutualLinkedGroup()
 		local hc=Duel.GetFieldGroupCount(tp,LOCATION_HAND,0)
 		local tt=#g-hc
-		if tt>=1 and Duel.IsPlayerCanDraw(tp,tt) and Duel.SelectYesNo(tp,aux.Stringid(26051015,3)) then
+		if tt>=1 and Duel.IsPlayerCanDraw(tp,tt) and Duel.SelectYesNo(tp,aux.Stringid(26056015,3)) then
 			Duel.BreakEffect()
 			Duel.Draw(tp,tt,REASON_EFFECT)
 		end

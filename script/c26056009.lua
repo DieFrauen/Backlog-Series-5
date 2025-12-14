@@ -1,4 +1,4 @@
---Tetramius Grit - Laethia
+--Swift Tetramius - Laethia
 function c26056009.initial_effect(c)
 	--link summon
 	Link.AddProcedure(c,c26056009.matfilter,2)

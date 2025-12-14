@@ -1,4 +1,4 @@
---Tetramius Swash - Acquisos
+--Tetramius Acquisos
 function c26056004.initial_effect(c)
 	--Special Summon procedure
 	local e1=Effect.CreateEffect(c)
@@ -30,6 +30,7 @@ local COUNTER_TETRAQUA =0x1658
 c26056004.counter_place_list={COUNTER_TETRAQUA }
 c26056004.tetracounter=COUNTER_TETRAQUA
 c26056004.tetrafilter=aux.FaceupFilter(Card.IsSetCard,0x656)
+c26056004.TETRATOKEN={COUNTER_TETRAQUA,26056104}
 function c26056004.hspval(e,c)
 	local zone=0
 	local left_right=0

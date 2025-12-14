@@ -14,7 +14,7 @@ function c26056011.initial_effect(c)
 	--shuffle Tetramius from GY to gain Counters
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(26056011,0))
-	e2:SetCategory(CATEGORY_TODECK|CATEGORY_LEAVE_GRAVE|CATEGORY_COIN)
+	e2:SetCategory(CATEGORY_TODECK|CATEGORY_LEAVE_GRAVE|CATEGORY_COUNTER)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_MZONE)

@@ -1,4 +1,4 @@
---Tetramius Flare - Rubea
+--Tetramius Rubea
 function c26056002.initial_effect(c)
 	--Special Summon procedure
 	local e1=Effect.CreateEffect(c)
@@ -28,6 +28,7 @@ end
 local COUNTER_TETRAFLARE =0x1656
 c26056002.counter_place_list={COUNTER_TETRAFLARE }
 c26056002.tetrafilter=aux.FaceupFilter(Card.IsSetCard,0x656)
+c26056002.TETRATOKEN={COUNTER_TETRAFLARE,26056102}
 function c26056002.hspval(e,c)
 	local zone=0
 	local left_right=0

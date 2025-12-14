@@ -1,4 +1,4 @@
---Tetramius Mold - Amnisos
+--Tetramius Amnisos
 function c26056003.initial_effect(c)
 	--Special Summon procedure
 	local e1=Effect.CreateEffect(c)
@@ -29,6 +29,7 @@ end
 local COUNTER_TETRALAND =0x1657
 c26056003.counter_place_list={COUNTER_TETRALAND }
 c26056003.tetrafilter=aux.FaceupFilter(Card.IsSetCard,0x656)
+c26056003.TETRATOKEN={COUNTER_TETRALAND,26056103}
 function c26056003.hspval(e,c)
 	local zone=0
 	local left_right=0

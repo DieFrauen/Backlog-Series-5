@@ -1,4 +1,4 @@
---Tetramius Fury - Tristia
+--Searing Tetramius - Tristia
 function c26056006.initial_effect(c)
 	--link summon
 	Link.AddProcedure(c,c26056006.matfilter,2)

@@ -1,4 +1,4 @@
---Tetramius Gale - Alba
+--Tetramius Alba
 function c26056005.initial_effect(c)
 	--Special Summon procedure
 	local e1=Effect.CreateEffect(c)
@@ -28,6 +28,7 @@ end
 local COUNTER_TETRAIR =0x1659
 c26056005.counter_place_list={COUNTER_TETRAIR }
 c26056005.tetrafilter=aux.FaceupFilter(Card.IsSetCard,0x656)
+c26056005.TETRATOKEN={COUNTER_TETRAIR,26056105}
 function c26056005.hspval(e,c)
 	local zone=0
 	local left_right=0

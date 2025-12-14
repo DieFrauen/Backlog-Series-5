@@ -1,4 +1,4 @@
---Tetramius Might - Carcera
+--Sturdy Tetramius - Carcera
 function c26056007.initial_effect(c)
 	--link summon
 	Link.AddProcedure(c,c26056007.matfilter,2)

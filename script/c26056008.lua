@@ -1,4 +1,4 @@
---Tetramius Spur - Junthia
+--Stream Tetramius - Junthia
 function c26056008.initial_effect(c)
 	--link summon
 	Link.AddProcedure(c,c26056008.matfilter,2)
